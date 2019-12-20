@@ -11,7 +11,7 @@ using InterfaceDAL;
 using ADODotNetDAL;
 using CommanDAL;
 using Unity.Resolution;
-
+using EfDal;
 namespace FactoryDALLayer
 {
     /* On Next day- Factory is not Generic So, Make it Generic */
@@ -24,13 +24,8 @@ namespace FactoryDALLayer
         /* i am commect dictionaty collection because we have ready made object Creation library*/
 
         //private static Dictionary<string, CustomerBase> Cust = new Dictionary<string, CustomerBase>();
-        private static UnityContainer ObjectList = null;
-        static FactoryDAL()
-        {
-            //Cust.Add("Customer", new Customer());
-            //Cust.Add("Lead", new Lead());
-
-        }
+        private static IUnityContainer ObjectList = null;
+       
         public static AnyType Create(string type)
         {
 
@@ -40,7 +35,8 @@ namespace FactoryDALLayer
             {
                 ObjectList = new UnityContainer();
 
-                ObjectList.RegisterType<IDAL<ICustomer>, CustomerDAL>("AdoDal");
+                ObjectList.RegisterType<IDAL<CustomerBase>, CustomerDAL>("AdoDal");
+                ObjectList.RegisterType<IDAL<CustomerBase>,EfCustomerDal>("EFDal");
 
             }
 

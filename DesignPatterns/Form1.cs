@@ -15,7 +15,7 @@ namespace DesignPatterns
 {
     public partial class Form1 : Form
     {
-        ICustomer Cust = null;
+        CustomerBase Cust = null;
         public Form1()
         {
             InitializeComponent();
@@ -52,8 +52,8 @@ namespace DesignPatterns
 
         public void Loadgrid()
         {
-            IDAL<ICustomer> Cust = FactoryDAL<IDAL<ICustomer>>.Create("AdoDal");
-            List<ICustomer> objCust = new List<ICustomer>();
+            IDAL<CustomerBase> Cust = FactoryDAL<IDAL<CustomerBase>>.Create("EFF");
+            List<CustomerBase> objCust = new List<CustomerBase>();
             objCust = Cust.Search();
             dgv.DataSource = objCust;
 
@@ -63,7 +63,7 @@ namespace DesignPatterns
 
 
             /*  We using polymorphism which is act different in different conditions  */
-            Cust = Factory<ICustomer>.Create(cmbCustomertype.Text);
+            Cust = Factory<CustomerBase>.Create(cmbCustomertype.Text);
 
 
             /*  we are using Here direct Concrit Class..this is not fully decouple
@@ -82,7 +82,7 @@ namespace DesignPatterns
         private void btnAdd_Click(object sender, EventArgs e)
         {
             Loadcontrol();
-            IDAL<ICustomer> objCust = FactoryDAL<IDAL<ICustomer>>.Create("AdoDal");
+            IDAL<CustomerBase> objCust = FactoryDAL<IDAL<CustomerBase>>.Create("AdoDal");
             objCust.Add(Cust);
             objCust.save();
         }

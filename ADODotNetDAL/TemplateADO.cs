@@ -8,6 +8,8 @@ using CommanDAL;
 using InterfaceCustomer;
 using System.Data.Common;
 using FactoryCustomer;
+using InterfaceDAL;
+
 namespace ADODotNetDAL
 {
     public abstract class TemplateADO<AnyType> : AbtractDAL<AnyType>
@@ -69,7 +71,7 @@ namespace ADODotNetDAL
         }
     }
 
-    public class CustomerDAL  : TemplateADO<ICustomer>
+    public class CustomerDAL  : TemplateADO<CustomerBase>, IDAL<CustomerBase>
     {
         
         public CustomerDAL(string _Connectionstring) :base(_Connectionstring)
@@ -77,15 +79,15 @@ namespace ADODotNetDAL
             
         }
 
-        protected override List<ICustomer> ExecuteCommand()
+        protected override List<CustomerBase> ExecuteCommand()
         {
             SqlDataReader dr = null;
             objCommand.CommandText = "select * from tblCustomer";
             dr = objCommand.ExecuteReader();
-            List<ICustomer> cust = new List<ICustomer>();
+            List<CustomerBase> cust = new List<CustomerBase>();
             while (dr.Read())
             {
-                ICustomer cs = Factory<ICustomer>.Create("Customer");
+                CustomerBase cs = Factory<CustomerBase>.Create("Customer");
                 cs.CustomerName = dr["CustomerName"].ToString() ;
                 cs.Address = dr["Address"].ToString();
                 cs.BillAmount = Convert.ToInt32(dr["BillAmount"]);
@@ -97,7 +99,7 @@ namespace ADODotNetDAL
             return cust;
 
         }
-        protected override void ExecuteCommand(ICustomer obj)
+        protected override void ExecuteCommand(CustomerBase obj)
         {
             objCommand.CommandText = "Insert into tblCustomer(CustomerName,BillAmount,BillDate,PhoneNumber,address)Values('" +  obj.CustomerName + "'," + obj.BillAmount +",'" + obj.BillDate + "'," + obj.PhoneNumber + ",'" + obj.Address +"' )";
             objCommand.ExecuteNonQuery();
