@@ -11,7 +11,7 @@ using InterfaceDAL;
 using ADODotNetDAL;
 using CommanDAL;
 using Unity.Resolution;
-using EfDal;
+
 namespace FactoryDALLayer
 {
     /* On Next day- Factory is not Generic So, Make it Generic */
@@ -36,7 +36,7 @@ namespace FactoryDALLayer
                 ObjectList = new UnityContainer();
 
                 ObjectList.RegisterType<IDAL<CustomerBase>, CustomerDAL>("AdoDal");
-                ObjectList.RegisterType<IDAL<CustomerBase>,EfCustomerDal>("EFDal");
+                 
 
             }
 
