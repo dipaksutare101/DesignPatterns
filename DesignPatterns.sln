@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommanDAL", "CommanDAL\Comm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADODotNetDAL", "ADODotNetDAL\ADODotNetDAL.csproj", "{376CBE32-A395-4E93-AE94-767CB4B44EF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FactoryDAL", "FactoryDAL\FactoryDAL.csproj", "{D4EF1476-23CA-4D0B-9155-D4FFD2442D05}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FactoryDALLayer", "FactoryDAL\FactoryDALLayer.csproj", "{D4EF1476-23CA-4D0B-9155-D4FFD2442D05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

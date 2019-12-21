@@ -84,9 +84,9 @@
       <Project>{8f1e1d87-d002-4a5d-a20d-49f6b6e9479f}</Project>
       <Name>FactoryCustomer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FactoryDAL\FactoryDAL.csproj">
+    <ProjectReference Include="..\FactoryDAL\FactoryDALLayer.csproj">
       <Project>{d4ef1476-23ca-4d0b-9155-d4ffd2442d05}</Project>
-      <Name>FactoryDAL</Name>
+      <Name>FactoryDALLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\InterfaceCustomer\InterfaceCustomer.csproj">
       <Project>{986b8ddd-e1af-4b92-a6a7-191d963517c7}</Project>

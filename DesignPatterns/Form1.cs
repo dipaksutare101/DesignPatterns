@@ -52,10 +52,10 @@ namespace DesignPatterns
 
         public void Loadgrid()
         {
-            IDAL<CustomerBase> Cust = FactoryDAL<IDAL<CustomerBase>>.Create("EFF");
-            List<CustomerBase> objCust = new List<CustomerBase>();
-            objCust = Cust.Search();
-            dgv.DataSource = objCust;
+            //IDAL<CustomerBase> Cust = FactoryDAL<IDAL<CustomerBase>>.Create("EFF");
+            //List<CustomerBase> objCust = new List<CustomerBase>();
+            //objCust = Cust.Search();
+            //dgv.DataSource = objCust;
 
         }
         private void cmbCustomertype_SelectedIndexChanged(object sender, EventArgs e)

@@ -37,7 +37,6 @@ namespace FactoryDALLayer
 
                 ObjectList.RegisterType<IDAL<CustomerBase>, CustomerDAL>("AdoDal");
                  
-
             }
 
 
