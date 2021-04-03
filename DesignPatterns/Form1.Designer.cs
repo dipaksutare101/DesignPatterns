@@ -44,6 +44,7 @@
             this.btnValidate = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.dgv = new System.Windows.Forms.DataGridView();
+            this.cmbDal = new System.Windows.Forms.ComboBox();
             label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.SuspendLayout();
@@ -179,11 +180,23 @@
             this.dgv.Size = new System.Drawing.Size(750, 150);
             this.dgv.TabIndex = 14;
             // 
+            // cmbDal
+            // 
+            this.cmbDal.FormattingEnabled = true;
+            this.cmbDal.Items.AddRange(new object[] {
+            "AdoDal",
+            "EFDal"});
+            this.cmbDal.Location = new System.Drawing.Point(554, 16);
+            this.cmbDal.Name = "cmbDal";
+            this.cmbDal.Size = new System.Drawing.Size(121, 21);
+            this.cmbDal.TabIndex = 15;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.cmbDal);
             this.Controls.Add(this.dgv);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.btnValidate);
@@ -225,6 +238,7 @@
         private System.Windows.Forms.Button btnValidate;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.DataGridView dgv;
+        private System.Windows.Forms.ComboBox cmbDal;
     }
 }
 

@@ -11,6 +11,7 @@ using InterfaceDAL;
 using ADODotNetDAL;
 using CommanDAL;
 using Unity.Resolution;
+using EfDal;
 
 namespace FactoryDALLayer
 {
@@ -36,13 +37,14 @@ namespace FactoryDALLayer
                 ObjectList = new UnityContainer();
 
                 ObjectList.RegisterType<IDAL<CustomerBase>, CustomerDAL>("AdoDal");
-                 
+                ObjectList.RegisterType<IDAL<CustomerBase>, EfCustomerDal>("EFDal");
+
             }
 
 
             return ObjectList.Resolve<AnyType>(type, new Unity.Resolution.ResolverOverride[]
                                                                                         {
-                                                                                          new ParameterOverride("_Connectionstring",@"Data Source=DIPAK\SQLEXPRESS;Initial Catalog=DesignPattern;Persist Security Info=True;User ID=sa;Password=smart@123")
+                                                                                          new ParameterOverride("_Connectionstring",@"Data Source=NAUSHIK;Initial Catalog=DP;Persist Security Info=True;User ID=sa;Password=smart@123")
                                                                                         }
                                                                                     );
 

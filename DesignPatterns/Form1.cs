@@ -82,7 +82,7 @@ namespace DesignPatterns
         private void btnAdd_Click(object sender, EventArgs e)
         {
             Loadcontrol();
-            IDAL<CustomerBase> objCust = FactoryDAL<IDAL<CustomerBase>>.Create("AdoDal");
+            IDAL<CustomerBase> objCust = FactoryDAL<IDAL<CustomerBase>>.Create(cmbDal.SelectedItem.ToString());
             objCust.Add(Cust);
             objCust.save();
         }
