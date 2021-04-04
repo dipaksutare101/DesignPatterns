@@ -40,8 +40,8 @@ namespace FactoryCustomer
             if (ObjectList == null)
             {
                 ObjectList = new UnityContainer();
-                ObjectList.RegisterType<CustomerBase, Customer>("Customer",new InjectionConstructor(new ValidationCustomer()));
-                ObjectList.RegisterType<CustomerBase, Lead>("Lead" ,new InjectionConstructor(new ValidationLead()));
+                ObjectList.RegisterType<CustomerBase, CustomerBase>("Customer",new InjectionConstructor(new ValidationCustomer()));
+                ObjectList.RegisterType<CustomerBase, CustomerBase>("Lead" ,new InjectionConstructor(new ValidationLead()));
                 
 
             }

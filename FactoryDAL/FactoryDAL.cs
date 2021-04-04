@@ -44,7 +44,7 @@ namespace FactoryDALLayer
 
             return ObjectList.Resolve<AnyType>(type, new Unity.Resolution.ResolverOverride[]
                                                                                         {
-                                                                                          new ParameterOverride("_Connectionstring",@"Data Source=NAUSHIK;Initial Catalog=DP;Persist Security Info=True;User ID=sa;Password=smart@123")
+                                                                                          new ParameterOverride("_Connectionstring",@"Data Source=DESKTOP-U99FI1U;Initial Catalog=DP;Persist Security Info=True;User ID=sa;Password=smart@123")
                                                                                         }
                                                                                     );
 
