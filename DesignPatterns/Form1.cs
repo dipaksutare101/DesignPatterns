@@ -81,10 +81,50 @@ namespace DesignPatterns
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            IUow uow = FactoryDAL<IUow>.Create("EfUOW");
             Loadcontrol();
-            IDAL<CustomerBase> objCust = FactoryDAL<IDAL<CustomerBase>>.Create(cmbDal.SelectedItem.ToString());
+            IRepository<CustomerBase> objCust = FactoryDAL<IRepository<CustomerBase>>.Create(cmbDal.SelectedItem.ToString());
+            objCust.SetUnitWork(uow);
             objCust.Add(Cust);
-            objCust.save();
+            uow.Committ();
+
+            //IRepository<CustomerBase> objCust = FactoryDAL<IRepository<CustomerBase>>.Create(cmbDal.SelectedItem.ToString());
+            //objCust.Add(Cust);
+            //objCust.save();
+        }
+
+        private void btnUOW_Click(object sender, EventArgs e)
+        {
+            IUow uow = FactoryDAL<IUow>.Create("EfUOW");
+            try
+            {
+                CustomerBase cust1 = new CustomerBase();
+                cust1.CustomerType = "Lead";
+                cust1.CustomerName = "Cust1";
+
+                // Unit of work
+                IRepository<CustomerBase> dal = FactoryDAL<IRepository<CustomerBase>>
+                                     .Create(cmbDal.Text); // Unit
+                dal.SetUnitWork(uow);
+                dal.Add(cust1); // In memory
+
+
+                cust1 = new CustomerBase();
+                cust1.CustomerType = "Lead";
+                cust1.CustomerName = "Cust2";
+                cust1.Address = "dzxcczx";
+                IRepository<CustomerBase> dal1 = FactoryDAL<IRepository<CustomerBase>>
+                                     .Create(cmbDal.Text); // Unit
+                dal1.SetUnitWork(uow);
+                dal1.Add(cust1); // In memory
+
+                uow.Committ();
+            }
+            catch (Exception ex)
+            {
+                uow.RollBack();
+                MessageBox.Show(ex.Message.ToString());
+            }
         }
     }
 }

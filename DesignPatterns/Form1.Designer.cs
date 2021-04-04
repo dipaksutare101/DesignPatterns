@@ -45,6 +45,7 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.dgv = new System.Windows.Forms.DataGridView();
             this.cmbDal = new System.Windows.Forms.ComboBox();
+            this.btnUOW = new System.Windows.Forms.Button();
             label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.SuspendLayout();
@@ -182,20 +183,32 @@
             // 
             // cmbDal
             // 
+            this.cmbDal.DisplayMember = "EDDal";
             this.cmbDal.FormattingEnabled = true;
             this.cmbDal.Items.AddRange(new object[] {
-            "AdoDal",
-            "EFDal"});
+            "EFDal",
+            "AdoDal"});
             this.cmbDal.Location = new System.Drawing.Point(554, 16);
             this.cmbDal.Name = "cmbDal";
             this.cmbDal.Size = new System.Drawing.Size(121, 21);
             this.cmbDal.TabIndex = 15;
+            // 
+            // btnUOW
+            // 
+            this.btnUOW.Location = new System.Drawing.Point(617, 111);
+            this.btnUOW.Name = "btnUOW";
+            this.btnUOW.Size = new System.Drawing.Size(75, 23);
+            this.btnUOW.TabIndex = 16;
+            this.btnUOW.Text = "UOW";
+            this.btnUOW.UseVisualStyleBackColor = true;
+            this.btnUOW.Click += new System.EventHandler(this.btnUOW_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnUOW);
             this.Controls.Add(this.cmbDal);
             this.Controls.Add(this.dgv);
             this.Controls.Add(this.btnAdd);
@@ -239,6 +252,7 @@
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.DataGridView dgv;
         private System.Windows.Forms.ComboBox cmbDal;
+        private System.Windows.Forms.Button btnUOW;
     }
 }
 

@@ -36,17 +36,15 @@ namespace FactoryDALLayer
             {
                 ObjectList = new UnityContainer();
 
-                ObjectList.RegisterType<IDAL<CustomerBase>, CustomerDAL>("AdoDal");
-                ObjectList.RegisterType<IDAL<CustomerBase>, EfCustomerDal>("EFDal");
+                ObjectList.RegisterType<IRepository<CustomerBase>, CustomerDAL>("AdoDal");
+                ObjectList.RegisterType<IRepository<CustomerBase>, EfCustomerDal>("EFDal");
+                ObjectList.RegisterType<IUow, AdoUow>("AdoUOW");
+                ObjectList.RegisterType<IUow, EUow>("EfUOW");
 
             }
 
 
-            return ObjectList.Resolve<AnyType>(type, new Unity.Resolution.ResolverOverride[]
-                                                                                        {
-                                                                                          new ParameterOverride("_Connectionstring",@"Data Source=DESKTOP-U99FI1U;Initial Catalog=DP;Persist Security Info=True;User ID=sa;Password=smart@123")
-                                                                                        }
-                                                                                    );
+            return ObjectList.Resolve<AnyType>(type);
 
             /* In Constructor dictinary Fill again again it will create Performance issue ..Remove From Constructor */
             /* We need to use Lazy Loading Pattern -  Mean Load on Demand*/ //Design Pattern :-Lazy Loading Pattern 

@@ -9,6 +9,7 @@ using InterfaceCustomer;
 using System.Data.Common;
 using FactoryCustomer;
 using InterfaceDAL;
+using System.Configuration;
 
 namespace ADODotNetDAL
 {
@@ -18,93 +19,127 @@ namespace ADODotNetDAL
         /* Design Pattern:- Template Pattern*/
         /* this pattern happened when Some steps are in sequence */
 
-        private SqlConnection objConn = null;
+        protected SqlConnection objConn = null;
         protected SqlCommand objCommand = null;
-
-        protected string Connectionstring = null;
-        public TemplateADO(string _ConnectionString) : base(_ConnectionString)
+        IUow uowobj = null;
+        public override void SetUnitWork(IUow uow)
         {
-            Connectionstring = _ConnectionString;
-        }
-        private void Open()
-        {
-            objConn = new SqlConnection(ConnectionString);
-            objConn.Open();
+            uowobj = uow;
+            objConn = ((AdoUow)uow).Connection;
             objCommand = new SqlCommand();
             objCommand.Connection = objConn;
-        }
-        private void Close()
-        {
-            objConn.Close();
+            objCommand.Transaction = ((AdoUow)uow).Transaction;
         }
 
-        protected abstract void ExecuteCommand(AnyType obj);
-        protected abstract List<AnyType> ExecuteCommand();
-       
-        public void Execute(AnyType obj)
+        private void Open()
+        {
+            if (objConn == null)
+            {
+                objConn = new SqlConnection(ConfigurationManager.
+                        ConnectionStrings["Conn"].ConnectionString);
+                objConn.Open();
+                objCommand = new SqlCommand();
+                objCommand.Connection = objConn;
+            }
+
+        }
+        protected abstract void ExecuteCommand(AnyType obj); // Child classes 
+        protected abstract List<AnyType> ExecuteCommand(); // Child classes 
+        private void Close()
+        {
+            if (uowobj == null)
+            {
+                objConn.Close();
+            }
+        }
+        // Design pattern :- Template pattern
+        public void Execute(AnyType obj) // Fixed Sequence Insert
         {
             Open();
             ExecuteCommand(obj);
             Close();
         }
-
-        public List<AnyType> Execute()
+        public List<AnyType> Execute() // Fixed Sequence select
         {
-            List<AnyType> Cust = new List<AnyType>();
+            List<AnyType> objTypes = null;
             Open();
-            Cust= ExecuteCommand();
+            objTypes = ExecuteCommand();
             Close();
-            return Cust;
+            return objTypes;
         }
-
         public override void save()
         {
-             foreach(var o in AnyTypes)
+            foreach (AnyType o in AnyTypes)
             {
                 Execute(o);
             }
         }
-
         public override List<AnyType> Search()
         {
             return Execute();
         }
     }
 
-    public class CustomerDAL  : TemplateADO<CustomerBase>, IDAL<CustomerBase>
+    public class CustomerDAL  : TemplateADO<CustomerBase>, IRepository<CustomerBase>
     {
-        
-        public CustomerDAL(string _Connectionstring) :base(_Connectionstring)
-        {
-            
-        }
 
         protected override List<CustomerBase> ExecuteCommand()
         {
-            SqlDataReader dr = null;
             objCommand.CommandText = "select * from tblCustomer";
+            SqlDataReader dr = null;
             dr = objCommand.ExecuteReader();
-            List<CustomerBase> cust = new List<CustomerBase>();
+            List<CustomerBase> custs = new List<CustomerBase>();
             while (dr.Read())
             {
-                CustomerBase cs = Factory<CustomerBase>.Create("Customer");
-                cs.CustomerName = dr["CustomerName"].ToString() ;
-                cs.Address = dr["Address"].ToString();
-                cs.BillAmount = Convert.ToInt32(dr["BillAmount"]);
-                cs.BillDate = Convert.ToDateTime(dr["BillDate"]);
-                cs.PhoneNumber = dr["PhoneNumber"].ToString();
-                cust.Add(cs);
+                CustomerBase icust = Factory<CustomerBase>.Create("Customer");
+                icust.Id = Convert.ToInt16(dr["Id"]);
+                icust.CustomerType = dr["CustomerType"].ToString();
+                icust.CustomerName = dr["CustomerName"].ToString();
+                icust.BillDate = Convert.ToDateTime(dr["BillDate"]);
+                icust.BillAmount = Convert.ToDecimal(dr["BillAmount"]);
+                icust.PhoneNumber = dr["PhoneNumber"].ToString();
+                icust.Address = dr["Address"].ToString();
+                custs.Add(icust);
             }
-
-            return cust;
-
+            return custs;
         }
         protected override void ExecuteCommand(CustomerBase obj)
         {
-            objCommand.CommandText = "Insert into tblCustomer(CustomerName,BillAmount,BillDate,PhoneNumber,address)Values('" +  obj.CustomerName + "'," + obj.BillAmount +",'" + obj.BillDate + "'," + obj.PhoneNumber + ",'" + obj.Address +"' )";
+            objCommand.CommandText = "insert into tblCustomer(" +
+                                            "CustomerName," +
+                                            "BillAmount,BillDate," +
+                                            "PhoneNumber,Address,CustomerType)" +
+                                            "values('" + obj.CustomerName + "'," +
+                                            obj.BillAmount + ",'" +
+                                            obj.BillDate + "','" +
+                                            obj.PhoneNumber + "','" +
+                                            obj.Address + "','" + obj.CustomerType + "')";
             objCommand.ExecuteNonQuery();
         }
 
-        
+    }
+
+    public class AdoUow : IUow
+    {
+        public SqlConnection Connection { get; set; }
+        public SqlTransaction Transaction { get; set; }
+        public AdoUow()
+        {
+            Connection = new SqlConnection(ConfigurationManager.
+                        ConnectionStrings["Conn"].ConnectionString);
+            Connection.Open();
+            Transaction = Connection.BeginTransaction();
+        }
+        public void Committ()
+        {
+            Transaction.Commit();
+            Connection.Close();
+        }
+
+        public void RollBack() // Design pattern :- object Adapter pattern
+        {
+            Transaction.Dispose();
+            Connection.Close();
+        }
     }
 }

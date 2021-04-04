@@ -9,22 +9,22 @@ using InterfaceCustomer;
 namespace EfDal
 {
     // Design pattern :- Adpater pattern ( class Adapter pattern)
-    public class EfDalAbstract<AnyType> : DbContext, IDAL<AnyType>
+    public class EfDalAbstract<AnyType> : DbContext, IRepository<AnyType>
         where AnyType : class
     {
+        DbContext dbcont = null;
         public EfDalAbstract()
-            : base("name=Conn")
         {
-
+            dbcont = new EUow(); // Self contained transaction
         }
         public void Add(AnyType obj)
         {
-            Set<AnyType>().Add(obj); // in memory committ
+            dbcont.Set<AnyType>().Add(obj); // in memory committ
         }
-        
+
         public void save()
         {
-            SaveChanges(); //physical committ
+            dbcont.SaveChanges(); //physical committ
         }
         public void Update(AnyType obj)
         {
@@ -33,12 +33,17 @@ namespace EfDal
 
         public List<AnyType> Search()
         {
-            return Set<AnyType>().
+            return dbcont.Set<AnyType>().
                      AsQueryable<AnyType>().
-                         ToList<AnyType>();       
+                         ToList<AnyType>();
         }
 
-        
+
+
+        public void SetUnitWork(IUow uow)
+        {
+            dbcont = ((EUow)uow); // Global transaction UOW
+        }
     }
 
     public class EfCustomerDal :
@@ -52,6 +57,28 @@ namespace EfDal
                         .ToTable("tblCustomer");
            
 
+        }
+    }
+
+    public class EUow : DbContext, IUow
+    {
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CustomerBase>()
+                       .ToTable("tblCustomer");
+        }
+        public EUow() : base("name=Conn")
+        {
+
+        }
+        public void Committ()
+        {
+            SaveChanges();
+        }
+
+        public void RollBack() // Adapter
+        {
+            Dispose();
         }
     }
 }
