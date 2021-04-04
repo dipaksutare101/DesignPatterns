@@ -12,6 +12,7 @@ namespace EfDal
     public class EfDalAbstract<AnyType> : DbContext, IDAL<AnyType>
         where AnyType : class
     {
+        DbContext dbcon = null;
         public EfDalAbstract()
             : base("name=Conn")
         {
@@ -19,12 +20,12 @@ namespace EfDal
         }
         public void Add(AnyType obj)
         {
-            Set<AnyType>().Add(obj); // in memory committ
+            dbcon.Set<AnyType>().Add(obj); // in memory committ
         }
         
         public void save()
         {
-            SaveChanges(); //physical committ
+            dbcon.SaveChanges(); //physical committ
         }
         public void Update(AnyType obj)
         {
@@ -33,7 +34,7 @@ namespace EfDal
 
         public List<AnyType> Search()
         {
-            return Set<AnyType>().
+            return dbcon.Set<AnyType>().
                      AsQueryable<AnyType>().
                          ToList<AnyType>();       
         }
